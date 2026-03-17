@@ -31,6 +31,12 @@ export FILENAME=alumnos
 
 ## Ejecución
 
+Definir la variable de entorno:
+
+```
+export FILENAME=alumnos
+```
+
 Dar permisos de ejecución:
 
 ```
