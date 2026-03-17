@@ -6,6 +6,12 @@ SALIDA=$BASE/salida
 PROCESADO=$BASE/procesado
 ARCHIVO=$SALIDA/$FILENAME.txt
 
+# Validar variable
+if [ -z "$FILENAME" ]; then
+  echo "Error: definir variable de entorno FILENAME"
+  exit 1
+fi
+
 # Opción -d
 if [ "$1" == "-d" ]; then
   rm -rf $BASE
@@ -27,27 +33,30 @@ while true; do
   case $op in
 
     1)
-      mkdir -p $ENTRADA $SALIDA $PROCESADO
+      mkdir -p "$ENTRADA" "$SALIDA" "$PROCESADO"
       echo "Entorno creado"
       ;;
 
     2)
-      bash $BASE/consolidar.sh &
+      pgrep -f consolidar.sh > /dev/null || bash $BASE/consolidar.sh &
       echo "Proceso corriendo..."
       ;;
 
     3)
-      sort -n $ARCHIVO
+      [ -f "$ARCHIVO" ] || { echo "No hay datos"; continue; }
+      sort -n "$ARCHIVO"
       ;;
 
     4)
-      sort -k4 -nr $ARCHIVO | head -10
+      [ -f "$ARCHIVO" ] || { echo "No hay datos"; continue; }
+      sort -k4 -nr "$ARCHIVO" | head -10
       ;;
 
     5)
+      [ -f "$ARCHIVO" ] || { echo "No hay datos"; continue; }
       echo "Ingrese padrón:"
       read padron
-      grep "^$padron " $ARCHIVO
+      grep "^$padron" "$ARCHIVO"
       ;;
 
     6)
