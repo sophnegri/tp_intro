@@ -6,7 +6,7 @@ SALIDA=$BASE/salida
 PROCESADO=$BASE/procesado
 ARCHIVO=$SALIDA/$FILENAME.txt
 
-# Validar variable
+# Validar variable de entorno
 if [ -z "$FILENAME" ]; then
   echo "Error: definir variable de entorno FILENAME"
   exit 1
@@ -14,8 +14,8 @@ fi
 
 # Opción -d
 if [ "$1" == "-d" ]; then
-  rm -rf $BASE
   pkill -f consolidar.sh
+  rm -rf "$BASE"
   echo "Todo borrado"
   exit
 fi
@@ -38,25 +38,34 @@ while true; do
       ;;
 
     2)
-      pgrep -f consolidar.sh > /dev/null || bash $BASE/consolidar.sh &
+      pgrep -f consolidar.sh > /dev/null || bash "$BASE/consolidar.sh" &
       echo "Proceso corriendo..."
       ;;
 
     3)
-      [ -f "$ARCHIVO" ] || { echo "No hay datos"; continue; }
-      sort -n "$ARCHIVO"
+      if [ -f "$ARCHIVO" ]; then
+        sort -n "$ARCHIVO"
+      else
+        echo "No hay datos"
+      fi
       ;;
 
     4)
-      [ -f "$ARCHIVO" ] || { echo "No hay datos"; continue; }
-      sort -k4 -nr "$ARCHIVO" | head -10
+      if [ -f "$ARCHIVO" ]; then
+        sort -k5 -nr "$ARCHIVO" | head -10
+      else
+        echo "No hay datos"
+      fi
       ;;
 
     5)
-      [ -f "$ARCHIVO" ] || { echo "No hay datos"; continue; }
-      echo "Ingrese padrón:"
-      read padron
-      grep "^$padron" "$ARCHIVO"
+      if [ -f "$ARCHIVO" ]; then
+        echo "Ingrese padrón:"
+        read padron
+        grep "^$padron" "$ARCHIVO"
+      else
+        echo "No hay datos"
+      fi
       ;;
 
     6)
