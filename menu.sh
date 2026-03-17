@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BASE=~/EPNro1
+BASE=~/tp_intro
 ENTRADA=$BASE/entrada
 SALIDA=$BASE/salida
 PROCESADO=$BASE/procesado
