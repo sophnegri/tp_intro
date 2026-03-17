@@ -13,8 +13,10 @@ fi
 
 ARCHIVO=$SALIDA/$FILENAME.txt
 
+touch "$ARCHIVO"
+
 while true; do
-  for f in $ENTRADA/$FILENAME*.txt; do
+  for f in "$ENTRADA"/*.txt; do
 
     [ -e "$f" ] || continue
 
